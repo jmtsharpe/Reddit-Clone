@@ -1,0 +1,41 @@
+
+<% action_url = post.persisted? ? post_url(post) : posts_url %>
+<% action_method = post.persisted? ? "PATCH" : "POST" %>
+<% button_text = post.persisted? ? "Update Post" : "Post" %>
+
+<form action="<%= action_url %>" method="post">
+
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="_method" value="<%= action_method %>">
+
+  <label for="post_title">Title:
+  <input type="text" name="post[title]" id="post_title" value="<%= post.title %>">
+  </label>
+
+  <br>
+
+  <label for="post_url">URL (Optional):
+  <input type="text" name="post[url]" id="post_url" value="<%= post.url %>">
+  </label>
+
+  <br>
+
+  <p>
+    <label for="content">Content (Optional):
+      <textarea name="post[content]"><%= post.content%></textarea>
+    </label>
+  </p>
+
+  <br>
+
+  <input type="hidden" name="post[sub_ids][]" value="">
+
+  <% subs.each do |sub| %>
+  <label for="<%= sub.title %>"><%= sub.title %>
+    <input type="checkbox" name="post[sub_ids][]" id="<%= sub.title %>" value="<%= sub.id %>" <%= "checked" if post.sub_ids.include?(sub.id) %>>
+  </label>
+  <% end %>
+  <br>
+  <input type="submit" value="<%= button_text %>">
+
+</form>
